@@ -2,7 +2,15 @@
   margin: 0 auto;
   width: calc(100% - 21.45%);
   max-width: 1980px;
-  display: grid;
-  grid-template-columns: 232px 502px;
-  grid-template-rows: repeat(3, auto);
+  /*display: grid;*/
+  /*grid-template-columns: 232px 502px;*/
+  /*grid-template-rows: repeat(3, auto);*/
+}
+
+.ticketList__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
