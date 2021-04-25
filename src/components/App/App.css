@@ -12,3 +12,26 @@
   text-rendering: optimizeLegibility;
   min-height: 100vh;
 }
+
+::-webkit-scrollbar {
+  /*width: 2.5vw;*/
+  width: 16px;
+}
+
+::-webkit-scrollbar-button {
+  background: #F3F7FA;
+  border: 1px solid #DFE5EC;
+}
+
+::-webkit-scrollbar-button:hover {
+  background: #cbcfd2;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2196F3;
+  border: 1px solid #DFE5EC;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #217cd6;
+}
