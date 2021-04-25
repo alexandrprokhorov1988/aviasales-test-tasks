@@ -4,35 +4,53 @@ import Ticket from '../../components/Ticket/Ticket';
 import Logo from '../../images/Logo.svg';
 import {TICKETS_IN_A_ROW} from "../../utils/config";
 
-function TicketList({ tickets, count }) {
+function TicketList({ tickets, count, onButtonSortClick, buttonActive }) {
 
+  function handleClick(e) {
+    onButtonSortClick(e.target.value);
+  }
+  function handleChange(e) {
+    console.log(e.target);
+  }
   return (
     <section className='ticketList'>
-      <a href="https://www.aviasales.ru/">
-        <img src={Logo} alt="Логотип Авиасэйлс"/>
-      </a>
-      <div className="ticketList__filters">
-        <h2 className="ticketList__filters-title">Количество пересадок</h2>
-        <label htmlFor="all" className="ticketList__checkbox-label">Все</label>
-        <input className="ticketList__checkbox" type="checkbox" name="filter" id="all" value="all"/>
-        <label htmlFor="noOne" className="ticketList__checkbox-label">Без пересадок</label>
-        <input className="ticketList__checkbox" type="checkbox" name="filter" id="noOne" value="0"/>
-        <label htmlFor="one" className="ticketList__checkbox-label">1 пересадка</label>
-        <input className="ticketList__checkbox" type="checkbox" name="filter" id="one" value="1"/>
-        <label htmlFor="two" className="ticketList__checkbox-label">2 пересадки</label>
-        <input className="ticketList__checkbox" type="checkbox" name="filter" id="two" value="2"/>
-        <label htmlFor="three" className="ticketList__checkbox-label">3 пересадки</label>
-        <input className="ticketList__checkbox" type="checkbox" name="filter" id="three" value="3"/>
-      </div>
-      <div className="ticketList__button-container">
-        <button className="ticketList__button">Самый дешевый</button>
-        <button className="ticketList__button">Самый быстрый</button>
-        <button className="ticketList__button">Оптимальный</button>
-      </div>
-      <div className="ticketList__container">
-        {tickets.slice(0, count + TICKETS_IN_A_ROW).map((ticket, i) => (
-          <Ticket key={i} {...ticket} />))
-        }
+        <a target='_blank' rel="noreferrer" href="https://www.aviasales.ru/" title="Aviasales" className="ticketList__link">
+          <img src={Logo} alt="Логотип Авиасэйлс" className="ticketList__logo"/>
+        </a>
+        <div className="ticketList__filters">
+          <h2 className="ticketList__filters-title">Количество пересадок</h2>
+            <input onChange={handleChange} className="ticketList__checkbox" type="checkbox" name="filterAll" id="all" value="all"/>
+            <label htmlFor="all" className="ticketList__checkbox-label">Все</label>
+            <input onChange={handleChange} className="ticketList__checkbox" type="checkbox" name="filter" id="noOne" value="0"/>
+            <label htmlFor="noOne" className="ticketList__checkbox-label">Без пересадок</label>
+            <input onChange={handleChange} className="ticketList__checkbox" type="checkbox" name="filter" id="one" value="1"/>
+            <label htmlFor="one" className="ticketList__checkbox-label">1 пересадка</label>
+            <input onChange={handleChange} className="ticketList__checkbox" type="checkbox" name="filter" id="two" value="2"/>
+            <label htmlFor="two" className="ticketList__checkbox-label">2 пересадки</label>
+            <input onChange={handleChange} className="ticketList__checkbox" type="checkbox" name="filter" id="three" value="3"/>
+            <label htmlFor="three" className="ticketList__checkbox-label">3 пересадки</label>
+        </div>
+        <div className="ticketList__button-container">
+          <button
+            className={`ticketList__button ${buttonActive === 1 && 'ticketList__button_active'}`}
+            onClick={handleClick}
+            value={1}>Самый дешевый
+          </button>
+          <button
+            className={`ticketList__button ${buttonActive === 2 && 'ticketList__button_active'}`}
+            onClick={handleClick}
+            value={2}>Самый быстрый
+          </button>
+          <button
+            className={`ticketList__button ${buttonActive === 3 && 'ticketList__button_active'}`}
+            onClick={handleClick}
+            value={3}>Оптимальный
+          </button>
+        </div>
+        <div className="ticketList__container">
+          {tickets.slice(0, count + TICKETS_IN_A_ROW).map((ticket, i) => (
+            <Ticket key={i} {...ticket} />))
+          }
       </div>
     </section>
   )

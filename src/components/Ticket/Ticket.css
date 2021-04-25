@@ -10,8 +10,7 @@
   padding: 20px;
   box-sizing: border-box;
   border-radius: 4px;
-  box-shadow: 0px 4px 9px 1px rgba(151, 151, 151, 0.4);
-  margin-top: 20px;
+  box-shadow: 0 4px 9px 1px rgba(151, 151, 151, 0.4);
 }
 
 .ticket__header {
@@ -48,7 +47,7 @@
   padding-top: 20px;
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, 141px);
+  grid-template-columns: repeat(auto-fit, 33%);
   justify-content: space-between;
   grid-row-gap: 10px;
 }
@@ -85,4 +84,31 @@
 
 .ticket__info-sub-text_size_low {
   text-transform: none;
+}
+
+@media screen and (max-width: 375px) {
+  .ticket{
+    padding: 10px;
+  }
+  .ticketList__button{
+    font-size: 10px;
+  }
+  .ticket__info-text{
+    font-size: 11px;
+  }
+  .ticket__info-sub-text{
+    font-size: 11px;
+  }
+  .ticket__header{
+    height: 30px;
+  }
+  .ticket__price{
+    font-size: 20px;
+  }
+  .ticket__link{
+    height: 30px;
+  }
+  .ticket__logo{
+    height: 30px;
+  }
 }
