@@ -21,10 +21,6 @@
   cursor: pointer;
 }
 
-.ticketList__logo {
-
-}
-
 .ticketList__filters {
   grid-area: filters;
   max-width: 232px;
@@ -37,7 +33,6 @@
   box-sizing: border-box;
   max-height: 252px;
   background-color: #FFFFFF;
-
 }
 
 .ticketList__filters-title {
@@ -48,59 +43,6 @@
   letter-spacing: 0.5px;
   color: #4A4A4A;
   margin: 0;
-}
-
-.ticketList__checkbox {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-}
-
-.ticketList__checkbox-label {
-  font-size: 13px;
-  line-height: 20px;
-  color: #4A4A4A;
-  width: 100%;
-  padding: 10px 20px 10px 20px;
-  box-sizing: border-box;
-}
-
-.ticketList__checkbox-label:hover {
-  background-color: #F1FCFF;
-  cursor: pointer;
-}
-.ticketList__checkbox-label:before {
-  content: '';
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 1px solid #9ABBCE;
-  border-radius: 4px;
-  cursor: pointer;
-  vertical-align: middle;
-  margin-right: 10px;
-}
-
-.ticketList__checkbox:checked+.ticketList__checkbox-label:before {
-  background-image: url(../../images/Shape.svg);
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  border: 1px solid #2196F3;
-}
-
-.ticketList__checkbox:disabled+.ticketList__checkbox-label:before {
-  border: 1px solid grey;
-}
-
-.ticketList__checkbox:focus+.ticketList__checkbox-label:before {
-  box-shadow: 0 0 5px #2595f7;
-}
-
-.ticketList__checkbox:hover+.ticketList__checkbox-label:before {
-  box-shadow: 0 0 5px #F1FCFF;
 }
 
 .ticketList__button-container {
@@ -151,6 +93,7 @@
   grid-row-gap: 20px;
   width: 100%;
   grid-area: tickets;
+  min-height: 100vh;
 }
 
 @media screen and (max-width: 1024px) {

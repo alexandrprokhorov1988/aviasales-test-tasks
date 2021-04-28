@@ -30,7 +30,7 @@ const Ticket = React.memo((props) => {
     <article className="ticket" >
       <div className="ticket__header">
         <p className="ticket__price">{props.price} P</p>
-        <a target='_blank' rel="noreferrer" href="https://www.s7.ru/" className="ticket__link">
+        <a target='_blank' rel="noreferrer noopener" href="https://www.s7.ru/" className="ticket__link">
           <img src={logo} alt="S7 логотип" className="ticket__logo"/>
         </a>
       </div>
