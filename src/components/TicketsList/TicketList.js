@@ -7,14 +7,14 @@ import {TICKETS_IN_A_ROW} from "../../utils/config";
 import Preloader from '../../components/Preloader/Preloader';
 
 function TicketList(
-  { loading, checkboxes, tickets, count, onButtonSortClick, sortType, onCheckboxFilterClick, onFilterAllClick, mainCheckbox }) {
+  { loading, checkboxes, tickets, count, onButtonSortClick, sortType, onFilterCheckboxClick, mainCheckbox }) {
 
   function handleClick(e) {
     onButtonSortClick(e.target.value);
   }
 
   function handleChange(e) {
-    onFilterAllClick(e.target.checked);
+    onFilterCheckboxClick(e);
   }
 
   return (
@@ -34,7 +34,7 @@ function TicketList(
                id='all'/>
         <label htmlFor='all' className="checkbox__label">Все</label>
         {checkboxes.map((checkbox) => (
-          <Checkbox key={checkbox.id} {...checkbox} onCheckboxFilterClick={onCheckboxFilterClick}/>))
+          <Checkbox key={checkbox.id} {...checkbox} onFilterCheckboxClick={onFilterCheckboxClick}/>))
         }
       </div>
       <div className="ticketList__button-container">

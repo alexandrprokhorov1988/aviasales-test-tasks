@@ -4,7 +4,7 @@ import './Checkbox.css';
 const Checkbox = React.memo((props) => {
 
   function handleChange(e) {
-    props.onCheckboxFilterClick(e.target);
+    props.onFilterCheckboxClick(e);
   }
 
   return (
