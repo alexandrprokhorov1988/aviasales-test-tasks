@@ -7,12 +7,12 @@ function App() {
   const [originTickets, setOriginTickets] = React.useState([]);
   const [tickets, setTickets] = React.useState([]);
   const [checkboxes, setCheckboxes] = React.useState([
-    { id: 2, value: '0', isChecked: true, desc: 'Без пересадок' },
-    { id: 3, value: '1', isChecked: true, desc: '1 пересадка' },
-    { id: 4, value: '2', isChecked: true, desc: '2 пересадки' },
-    { id: 5, value: '3', isChecked: true, desc: '3 пересадки' }
+    { id: 2, value: '0', isChecked: false, desc: 'Без пересадок' },
+    { id: 3, value: '1', isChecked: false, desc: '1 пересадка' },
+    { id: 4, value: '2', isChecked: false, desc: '2 пересадки' },
+    { id: 5, value: '3', isChecked: false, desc: '3 пересадки' }
   ]);
-  const [mainCheckbox, setMainCheckbox] = React.useState(true);
+  const [mainCheckbox, setMainCheckbox] = React.useState(false);
   const [count, setCount] = React.useState(0);
   const [sortType, setSortType] = React.useState('price');
   const [loading, setLoading] = React.useState('');
@@ -54,31 +54,6 @@ function App() {
     setTickets(dataId.sort(priceSortFunc));
   }, []);
 
-  // React.useEffect(() => {
-  //   if(originTickets.length > 0) {
-  //     let arg = [];
-  //     let filteredArr;
-  //     let func;
-  //
-  //     for (let item of checkboxes) {
-  //       if (item.isChecked) {
-  //         arg.push(+item.value);
-  //       }
-  //     }
-  //     if (arg.length > 0) {
-  //       filteredArr = originTickets.filter((elem) => {
-  //         return arg.includes((elem.segments[0].stops.length + elem.segments[1].stops.length));
-  //       });
-  //     }
-  //     if (sortType === 'price') func = priceSortFunc;
-  //     if (sortType === 'duration') func = durationSortFunc;
-  //     if (sortType === 'optimal') func = optimalSortFunc;
-  //     let newTickets = arg.length > 0 ? filteredArr.sort(func) : originTickets.sort(func);
-  //
-  //     setTickets(newTickets);
-  //   }
-  // }, [originTickets, checkboxes, sortType]);
-
   React.useEffect(() => {
     if (tickets.length > 0) {
       let options = {
@@ -99,49 +74,53 @@ function App() {
     }
   }, [count, tickets]);
 
-  // function handleButtonSortClick(type) {
-  //   let func;
-  //   if (type === 'price') func = priceSortFunc;
-  //   if (type === 'duration') func = durationSortFunc;
-  //   if (type === 'optimal') func = optimalSortFunc;
-  //   let newTickets = originTickets.sort(func);
-  //   setTickets(newTickets);
-  //   setSortType(type);
-  // }
+  function handleButtonSortClick(type) {
+    setTickets(buttonSortFunc(tickets, type));
+    setSortType(type);
+  }
 
-  function handleFilterCheckboxClick(evt) {
-    let target = evt.target;
+  function buttonSortFunc(arr, type) {
+    let func;
+    if (type === 'price') func = priceSortFunc;
+    if (type === 'duration') func = durationSortFunc;
+    if (type === 'optimal') func = optimalSortFunc;
+    return arr.sort(func);
+  }
+
+  function handleCheckboxClick(evt) {
+    const target = evt.target;
     if (target.id === 'all') {
       setMainCheckbox(target.checked);
-      const changeIsChecked = checkboxes.map((elem) => ({ ...elem, isChecked: target.checked }));
-      setCheckboxes(changeIsChecked);
-      filterCheckboxes(changeIsChecked, originTickets)
+      const newCheckboxesArr = checkboxes.map((elem) => ({ ...elem, isChecked: target.checked }));
+      setCheckboxes(newCheckboxesArr);
+      filterFunctionForCheckboxes(newCheckboxesArr);
     } else {
       if (!target.checked) setMainCheckbox(false);
-      const changeIsChecked = checkboxes.map((elem) => elem.id === +target.id ? {
+      const newCheckboxesArr = checkboxes.map((elem) => elem.id === +target.id ? {
         ...elem,
         isChecked: !elem.isChecked
       } : elem);
-      setCheckboxes(changeIsChecked);
-      filterCheckboxes(changeIsChecked, originTickets);
+      setCheckboxes(newCheckboxesArr);
+      filterFunctionForCheckboxes(newCheckboxesArr);
     }
   }
 
-  function filterCheckboxes(arr, originArr) {
+  function filterFunctionForCheckboxes(checkboxesArr) {
     let arg = [];
-    for (let item of arr) {
+    for (let item of checkboxesArr) {
       if (item.isChecked) {
         arg.push(+item.value);
       }
     }
+    if (arg.length === checkboxes.length) setMainCheckbox(true);
     if (arg.length > 0) {
       let filteredArr;
-      filteredArr = originArr.filter((elem) => {
+      filteredArr = originTickets.filter((elem) => {
         return arg.includes((elem.segments[0].stops.length + elem.segments[1].stops.length));
       });
-      setTickets(filteredArr);
+      setTickets(buttonSortFunc(filteredArr, sortType));
     } else {
-      setTickets(originArr);
+      setTickets(buttonSortFunc(originTickets, sortType));
     }
   }
 
@@ -153,10 +132,9 @@ function App() {
         <TicketList
           tickets={tickets}
           count={count}
-          onFilterCheckboxClick={handleFilterCheckboxClick}
+          onFilterCheckboxClick={handleCheckboxClick}
           sortType={sortType}
-          // onButtonSortClick={handleButtonSortClick}
-          // onCheckboxFilterClick={handleFilterCheckboxClick}
+          onButtonSortClick={handleButtonSortClick}
           checkboxes={checkboxes}
           mainCheckbox={mainCheckbox}
           loading={loading}
