@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import TicketList from '../../components/TicketsList/TicketList';
 import data from '../../utils/data';
+import mainApi from '../../utils/MainApi';
+import {CONNECTION_REFUSED, SERVER_ERR, TOKEN_ERR} from "../../utils/constants";
 
 function App() {
   const [originTickets, setOriginTickets] = React.useState([]);
@@ -15,6 +17,7 @@ function App() {
   const [mainCheckbox, setMainCheckbox] = React.useState(false);
   const [count, setCount] = React.useState(0);
   const [sortType, setSortType] = React.useState('price');
+  const [errMessage, setErrMessage] = React.useState('');
   const [loading, setLoading] = React.useState('');
   const lazyLoadRef = React.useRef();
   const priceSortFunc = (a, b) => a.price - b.price;
@@ -29,29 +32,30 @@ function App() {
     return countStopsMOW - countStopsHKT;
   };
 
-  // React.useEffect(() => {
-  //   setLoading(true);
-  //   mainApi.getSearchId()
-  //     .then((res) => {
-  //       mainApi.getTickets(res.searchId)
-  //         .then((data) => {
-  //           let dataId = data.tickets.map((elem, i) => {
-  //             return { ...elem, id: i }
-  //           });
-  //           setOriginTickets(dataId);
-  //         })
-  //         .catch(() => console.log('Ошибка сервера'))
-  //         .finally(()=>setLoading(false));
-  //     })
-  //     .catch(() => console.log('Ошибка токена'));
-  // }, []);
-
   React.useEffect(() => {
-    let dataId = data.tickets.map((elem, i) => {
-      return { ...elem, id: i }
-    });
-    setOriginTickets(dataId);
-    setTickets(dataId.sort(priceSortFunc));
+    setLoading(true);
+    mainApi.getSearchId()
+      .then((res) => {
+        mainApi.getTickets(res.searchId)
+          .then((data) => {
+            let dataId = data.tickets.map((elem, i) => {
+              return { ...elem, id: i }
+            });
+            setOriginTickets(dataId);
+            setTickets(dataId.sort(priceSortFunc));
+          })
+          .catch(() => {
+            setErrMessage(SERVER_ERR);
+          })
+          .finally(() => setLoading(false));
+      })
+      .catch((err) => {
+        if (err.toString() === 'TypeError: Failed to fetch') {
+          setErrMessage(CONNECTION_REFUSED);
+        } else {
+          setErrMessage(TOKEN_ERR);
+        }
+      });
   }, []);
 
   React.useEffect(() => {
@@ -75,11 +79,11 @@ function App() {
   }, [count, tickets]);
 
   function handleButtonSortClick(type) {
-    setTickets(buttonSortFunc(tickets, type));
+    setTickets(sortFunc(tickets, type));
     setSortType(type);
   }
 
-  function buttonSortFunc(arr, type) {
+  function sortFunc(arr, type) {
     let func;
     if (type === 'price') func = priceSortFunc;
     if (type === 'duration') func = durationSortFunc;
@@ -87,25 +91,7 @@ function App() {
     return arr.sort(func);
   }
 
-  function handleCheckboxClick(evt) {
-    const target = evt.target;
-    if (target.id === 'all') {
-      setMainCheckbox(target.checked);
-      const newCheckboxesArr = checkboxes.map((elem) => ({ ...elem, isChecked: target.checked }));
-      setCheckboxes(newCheckboxesArr);
-      filterFunctionForCheckboxes(newCheckboxesArr);
-    } else {
-      if (!target.checked) setMainCheckbox(false);
-      const newCheckboxesArr = checkboxes.map((elem) => elem.id === +target.id ? {
-        ...elem,
-        isChecked: !elem.isChecked
-      } : elem);
-      setCheckboxes(newCheckboxesArr);
-      filterFunctionForCheckboxes(newCheckboxesArr);
-    }
-  }
-
-  function filterFunctionForCheckboxes(checkboxesArr) {
+  function filterFunc(checkboxesArr) {
     let arg = [];
     for (let item of checkboxesArr) {
       if (item.isChecked) {
@@ -118,13 +104,29 @@ function App() {
       filteredArr = originTickets.filter((elem) => {
         return arg.includes((elem.segments[0].stops.length + elem.segments[1].stops.length));
       });
-      setTickets(buttonSortFunc(filteredArr, sortType));
+      setTickets(sortFunc(filteredArr, sortType));
     } else {
-      setTickets(buttonSortFunc(originTickets, sortType));
+      setTickets(sortFunc(originTickets, sortType));
     }
   }
 
-  console.log(count);
+  function handleCheckboxClick(evt) {
+    const target = evt.target;
+    if (target.id === 'all') {
+      setMainCheckbox(target.checked);
+      const newCheckboxesArr = checkboxes.map((elem) => ({ ...elem, isChecked: target.checked }));
+      setCheckboxes(newCheckboxesArr);
+      filterFunc(newCheckboxesArr);
+    } else {
+      if (!target.checked) setMainCheckbox(false);
+      const newCheckboxesArr = checkboxes.map((elem) => elem.id === +target.id ? {
+        ...elem,
+        isChecked: !elem.isChecked
+      } : elem);
+      setCheckboxes(newCheckboxesArr);
+      filterFunc(newCheckboxesArr);
+    }
+  }
 
   return (
     <div className="page">
@@ -138,6 +140,7 @@ function App() {
           checkboxes={checkboxes}
           mainCheckbox={mainCheckbox}
           loading={loading}
+          errMessage={errMessage}
         />
         <div className="lazy-load" ref={lazyLoadRef}/>
       </main>

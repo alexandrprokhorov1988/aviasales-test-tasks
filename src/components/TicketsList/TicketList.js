@@ -7,7 +7,7 @@ import {TICKETS_IN_A_ROW} from "../../utils/config";
 import Preloader from '../../components/Preloader/Preloader';
 
 function TicketList(
-  { loading, checkboxes, tickets, count, onButtonSortClick, sortType, onFilterCheckboxClick, mainCheckbox }) {
+  { errMessage, loading, checkboxes, tickets, count, onButtonSortClick, sortType, onFilterCheckboxClick, mainCheckbox }) {
 
   function handleClick(e) {
     onButtonSortClick(e.target.value);
@@ -55,8 +55,12 @@ function TicketList(
         </button>
       </div>
       <div className="ticketList__container">
+        {errMessage ? <p className="ticketList__error-message">{errMessage}</p> :
+          <>
         {loading ? <Preloader/> : tickets.slice(0, count + TICKETS_IN_A_ROW).map((ticket, i) => (
           <Ticket key={ticket.id} {...ticket} />))
+        }
+        </>
         }
       </div>
     </section>
