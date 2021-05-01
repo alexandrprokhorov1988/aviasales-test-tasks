@@ -17,14 +17,21 @@
 
 Порядок установки локально.
 * Клонирование репозитория
-  #### `git clone https://github.com/alexandrprokhorov1988/aviasales-test-tasks.git`
-
+  ```sh
+   git clone https://github.com/alexandrprokhorov1988/aviasales-test-tasks.git
+   ```
 * Установка зависимостей
-  #### `npm install`
+  ```sh
+  npm install
+  ```
 * Запуск приложения режим develop
-  #### `npm run start`
+  ```sh 
+  npm run start
+  ```
 * Запуск сборки production 
-  #### `npm run build`
+  ```sh
+  npm run build
+  ```
 
 #### <a name="technologies">Технологии</a>
 * Спецификации HTML, CSS.
