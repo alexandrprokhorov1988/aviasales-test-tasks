@@ -13,7 +13,7 @@
 * [Ссылка на репозиторий с заданием](https://github.com/KosyanMedia/test-tasks/tree/master/aviasales_frontend)
 
 #### <a name="instructions">Инструкция</a>
-* [Ссылка на проект]()
+* [Ссылка на проект](http://alexandrprokhorov1988.github.io/aviasales-test-tasks/)
 
 Порядок установки локально.
 * Клонирование репозитория
