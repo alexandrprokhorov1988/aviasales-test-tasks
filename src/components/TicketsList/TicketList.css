@@ -18,6 +18,11 @@
   cursor: pointer;
 }
 
+.ticketList__logo {
+  width: 60px;
+  height: 60px;
+}
+
 .ticketList__filters {
   grid-area: filters;
   max-width: 232px;
