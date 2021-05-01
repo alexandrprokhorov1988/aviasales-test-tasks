@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import TicketList from '../../components/TicketsList/TicketList';
-import data from '../../utils/data';
 import mainApi from '../../utils/MainApi';
 import {CONNECTION_REFUSED, SERVER_ERR, TOKEN_ERR} from "../../utils/constants";
 
